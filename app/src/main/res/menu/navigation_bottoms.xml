@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/actionHome"
+        android:icon="@drawable/ic_home_white_40dp"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/actionSearch"
+        android:icon="@drawable/ic_search_white_40dp"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/actionFavourite"
+        android:icon="@drawable/ic_favorite_white_40dp"
+        tools:ignore="MenuTitle" />
+</menu>
