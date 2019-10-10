@@ -1,12 +1,13 @@
 package com.sun_asterisk.moviedb_49.data.model
 
 data class Movie(
-    val id: Int?,
-    val title: String?,
-    val posterPathUrl: String?,
-    val backDropPathUrl: String?,
-    val voteAverage: Double?,
-    val overView: String?
+    val id: Int? = null,
+    val title: String? = null,
+    val posterPathUrl: String? = null,
+    val backDropPathUrl: String? = null,
+    val voteAverage: Double? = null,
+    val overView: String? = null,
+    val genres: MutableList<Genres>? = null
 ) {
     class MovieBuilder {
         private var id: Int? = null
@@ -15,6 +16,7 @@ data class Movie(
         private var backDropPathUrl: String? = null
         private var voteAverage: Double? = null
         private var overView: String? = null
+        private var genresList: MutableList<Genres>? = null
 
         fun id(id: Int) = apply { this.id = id }
 
@@ -30,6 +32,9 @@ data class Movie(
 
         fun overView(overView: String) = apply { this.overView = overView }
 
-        fun bind() = Movie(id, title, posterPathUrl, backDropPathUrl, voteAverage, overView)
+        fun genresList(genres: MutableList<Genres>) = apply { this.genresList = genres }
+
+        fun bind() =
+            Movie(id, title, posterPathUrl, backDropPathUrl, voteAverage, overView, genresList)
     }
 }

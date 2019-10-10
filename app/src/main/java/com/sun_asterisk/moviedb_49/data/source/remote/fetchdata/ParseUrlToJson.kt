@@ -1,13 +1,14 @@
 package com.sun_asterisk.moviedb_49.data.source.remote.fetchdata
 
+import com.sun_asterisk.moviedb_49.data.model.Genres
 import com.sun_asterisk.moviedb_49.data.model.Movie
+import com.sun_asterisk.moviedb_49.utils.entry.GenresEntry
 import com.sun_asterisk.moviedb_49.utils.entry.MovieEntry
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.net.HttpURLConnection
 import java.net.URL
-
-private val TIME_OUT = 15000
 
 class ParseUrlToJson {
 
@@ -17,10 +18,11 @@ class ParseUrlToJson {
         val httpUrlConnection = url.openConnection().apply {
             connectTimeout = TIME_OUT
             readTimeout = TIME_OUT
-            doOutput = true
-        }
+        } as HttpURLConnection
+        httpUrlConnection.requestMethod = GET
+
         httpUrlConnection.connect()
-        val inputStream = httpUrlConnection.getInputStream()
+        val inputStream = httpUrlConnection.inputStream
         val bufferReader = BufferedReader(InputStreamReader(inputStream))
         val builder = StringBuilder()
         var line: String? = bufferReader.readLine()
@@ -29,16 +31,15 @@ class ParseUrlToJson {
             line = bufferReader.readLine()
         }
         bufferReader.close()
+        httpUrlConnection.disconnect()
         return builder.toString()
     }
 
     fun parseJsonToMovieObject(jsonObject: JSONObject): Movie = Movie.MovieBuilder()
         .id(jsonObject.getInt(MovieEntry.ID))
         .backDropPathUrl(jsonObject.getString(MovieEntry.BACKDROP_PATH))
-        .overView(jsonObject.getString(MovieEntry.OVERVIEW))
         .posterPathUrl(jsonObject.getString(MovieEntry.POSTER_PATH))
         .title(jsonObject.getString(MovieEntry.TITLE))
-        .voteAverage(jsonObject.getDouble(MovieEntry.VOTE_AVERAGE))
         .bind()
 
     fun parseJsonToMovies(string: String): MutableList<Movie> {
@@ -51,5 +52,33 @@ class ParseUrlToJson {
             movieList.add(movie)
         }
         return movieList
+    }
+
+    fun parsenJsonToGenresObject(jsonObject: JSONObject): Genres =
+        Genres(jsonObject.getInt(GenresEntry.ID), jsonObject.getString(GenresEntry.NAME))
+
+    fun parseJsonToGenres(string: String): Movie {
+        val genresList = mutableListOf<Genres>()
+        val jsonObject = JSONObject(string)
+        val jsonArray = JSONObject(string).getJSONArray(MovieEntry.GENRES)
+        for (i in 0 until jsonArray.length()) {
+            val genres = parsenJsonToGenresObject(jsonArray.getJSONObject(i))
+            genresList.add(genres)
+        }
+
+        return Movie.MovieBuilder()
+            .title(jsonObject.getString(MovieEntry.TITLE))
+            .backDropPathUrl(jsonObject.getString(MovieEntry.BACKDROP_PATH))
+            .posterPathUrl(jsonObject.getString(MovieEntry.POSTER_PATH))
+            .overView(jsonObject.getString(MovieEntry.OVERVIEW))
+            .voteAverage(jsonObject.getDouble(MovieEntry.VOTE_AVERAGE))
+            .id(jsonObject.getInt(MovieEntry.ID))
+            .genresList(genresList)
+            .bind()
+    }
+
+    companion object{
+        private const val TIME_OUT = 15000
+        private const val GET = "GET"
     }
 }
