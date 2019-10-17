@@ -9,7 +9,8 @@ import androidx.annotation.StringDef
     MovieEntry.BACKDROP_PATH,
     MovieEntry.OVERVIEW,
     MovieEntry.TITLE,
-    MovieEntry.VOTE_AVERAGE
+    MovieEntry.VOTE_AVERAGE,
+    MovieEntry.GENRES
 )
 annotation class MovieEntry {
     companion object {
@@ -20,5 +21,6 @@ annotation class MovieEntry {
         const val OVERVIEW = "overview"
         const val TITLE = "title"
         const val VOTE_AVERAGE = "vote_average"
+        const val GENRES = "genres"
     }
 }

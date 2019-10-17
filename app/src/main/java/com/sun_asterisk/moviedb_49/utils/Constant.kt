@@ -4,7 +4,8 @@ import com.sun_asterisk.moviedb_49.BuildConfig
 
 object Constant {
     const val BASE_URL = "https://api.themoviedb.org/3/"
-    const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w94_and_h141_bestv2/"
+    const val BASE_IMAGE_URL_POSTER = "https://image.tmdb.org/t/p/w94_and_h141_bestv2/"
+    const val BASE_IMAGE_URL_BACKDROP = "https://image.tmdb.org/t/p/w250_and_h141_face/"
     const val BASE_LANGUAGE = "&language=en-US"
     const val BASE_PAGE = "&page="
     const val BASE_API_KEY = "api_key=" + BuildConfig.API_KEY
@@ -15,4 +16,6 @@ object Constant {
     const val MOVIE_NOW_PLAYING = "movie/now_playing?"
     // Messenger
     const val MESSENGER = "Result is null"
+    // Page
+    const val DEFAULT_PAGE = 1
 }
